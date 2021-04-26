@@ -1,2 +1,2 @@
 # AHK-Scripts
-A collection of my autohotkey scripts 
+A collection of my autohotkey scripts.
