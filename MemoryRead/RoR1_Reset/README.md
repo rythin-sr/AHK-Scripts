@@ -20,7 +20,7 @@ You can edit the way the script works by simply replacing the coordinates in the
 All of them have comments next to them so it should be fairly easy to know which ones to replace.
 Generally what you might be replacing:
 
-           | Bandit | Sniper | Chef |
+     table | Bandit | Sniper | Chef |
 -----------|--------|--------|------|
  x (768p)  |  629   |   775  |  870 |
  y (768p)  |  417   |   417  |  417 |
