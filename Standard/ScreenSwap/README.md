@@ -1,4 +1,4 @@
-## ScreenSwap
+# ScreenSwap
 
 A script mainly meant to be used for programming streams, where you use both monitors and want to switch between them automatically on stream.
 This script is meant for 2 1080p monitors, however changing the resolution should be fairly trivial.
@@ -7,5 +7,5 @@ This script is meant for 2 1080p monitors, however changing the resolution shoul
 To use the script, set up 2 scenes in OBS, each capturing one monitor. Then, bind a hotkey to switch to those scenes (by default the script uses F23 and F24). 
 Your scenes should switch as soon as your mouse cursor moves from one screen to the other.
 
-# Extra Credits
+## Extra Credits
 - Ero, cleaning up the script
