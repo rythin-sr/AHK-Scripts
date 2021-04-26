@@ -21,6 +21,7 @@ All of them have comments next to them so it should be fairly easy to know which
 Generally what you might be replacing:
 
            | Bandit | Sniper | Chef |
+-----------|--------|--------|------|
  x (768p)  |  629   |   775  |  870 |
  y (768p)  |  417   |   417  |  417 |
  x (900p)  |  746   |   892  |  988 |
