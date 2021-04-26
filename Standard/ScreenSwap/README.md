@@ -8,4 +8,4 @@ To use the script, set up 2 scenes in OBS, each capturing one monitor. Then, bin
 Your scenes should switch as soon as your mouse cursor moves from one screen to the other.
 
 ## Extra Credits
-- Ero, cleaning up the script
+- (Ero)[https://github.com/just-ero], cleaning up the script
