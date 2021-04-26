@@ -20,13 +20,13 @@ You can edit the way the script works by simply replacing the coordinates in the
 All of them have comments next to them so it should be fairly easy to know which ones to replace.
 Generally what you might be replacing:
 
-     table | Bandit | Sniper | Chef |
------------|--------|--------|------|
- x (768p)  |  629   |   775  |  870 |
- y (768p)  |  417   |   417  |  417 |
- x (900p)  |  746   |   892  |  988 |
- y (900p)  |  480   |   480  |  480 |
- x (1080p) |  906   |  1051  | 1148 |
- y (1080p) |  565   |   565  |  565 |
+     table | Bandit | Sniper | Chef 
+-----------|--------|--------|------
+ x (768p)  |  629   |   775  |  870 
+ y (768p)  |  417   |   417  |  417 
+ x (900p)  |  746   |   892  |  988 
+ y (900p)  |  480   |   480  |  480 
+ x (1080p) |  906   |  1051  | 1148 
+ y (1080p) |  565   |   565  |  565 
  
 (I cba looking for the coords of the join game button do it yourself)
