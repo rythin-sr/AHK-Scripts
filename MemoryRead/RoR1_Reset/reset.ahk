@@ -9,6 +9,13 @@ if (_ClassMemory.__Class != "_ClassMemory")
     ExitApp
 }
 
+; Open a process with sufficient access to read and write memory addresses (this is required before you can use the other functions)
+; You only need to do this once. But if the process closes/restarts, then you will need to perform this step again.
+; .isHandleValid() can be used to check if program has restarted.
+; Note: The program identifier can be any AHK windowTitle i.e.ahk_exe, ahk_class, ahk_pid, or simply the window title. 
+; Unlike AHK this defaults to an exact match, but this can be changed via the passed parameter.
+; hProcessCopy is an optional variable in which the opened handled is stored. 
+
 f1::
 
 mem := new _ClassMemory("ahk_exe ROR_GMS_controller.exe", "", hProcessCopy) ; *****
@@ -24,119 +31,162 @@ if !isObject(mem)
     ExitApp
 }
 
+; read a pointer - mem.BaseAddress is automatically set to the base address.
 zoom := floor(mem.read(mem.BaseAddress + 0x02BED7E4, "Double", 0x80, 0x0, 0x520, 0x8, 0x510))
 res := floor(mem.read(mem.BaseAddress + 0x02BED7E4, "Double", 0x80, 0x0, 0x520, 0x8, 0x1F00))
 
-DoInputs(res, zoom)
+PauseGame()
+ChangeZoom(res, zoom)
+QuitToMenu(res)
+HostGame(res)
+PickBandit(res)
+StartRun(res)
+
 return
 
-CustomClick(x, y, d:=100) {
+CustomClick(x, y, d:=65) {
 	Send {Click %x% %y% D}
 	Sleep, d
 	Send {Click U}
 }
 
-DoInputs(r, z) {
+PauseGame() {
+	Send {Esc Down} ;open menu
+	Sleep, 65
+	Send {Esc Up}
+}
+
+ChangeZoom(r, z) { ; if zoom > 1 change the zoom to 1 and return to first menu page
+	if (z > 1) {
+		if (r = 768) {
+			CustomClick(683, 313) ; go to settings
+			CustomClick(683, 267) ; zoom 2 -> 1
+			CustomClick(683, 502) ; back
+		} else if (r = 900) {
+			CustomClick(800, 380) ; go to settings
+			CustomClick(800, 335) ; zoom 2 -> 1
+			CustomClick(800, 568) ; back
+		} else if (r = 1080) {    
+			if (z = 2) {
+				CustomClick(960, 465) ; go to settings
+				CustomClick(960, 418) ; zoom 2 -> 3
+				CustomClick(960, 350) ; zoom 3 -> 1
+				CustomClick(960, 652) ; back
+			} else if (z = 3) {
+				CustomClick(960, 415) ; go to settings
+				CustomClick(960, 350) ; zoom 3 -> 1
+				CustomClick(960, 652) ; back
+			}
+		}
+	}
+}
+
+QuitToMenu(r) {
 	if (r = 768) {
-		if (z = 2) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(683, 313) ;click video settings
-			CustomClick(683, 267) ;click zoom scale		
-			CustomClick(683, 502) ;click back
-			CustomClick(683, 459) ;click quit to menu
-			CustomClick(683, 390) ;click yes
-			CustomClick(683, 235) ;click start online game
-			CustomClick(683, 161) ;click host
-			CustomClick(629, 417) ;click bandit
-			CustomClick(683, 508) ;click ready
-			CustomClick(683, 508) ;twice
-			
-			
-		} else if (z = 1) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(683, 459) ;click quit to menu
-			CustomClick(683, 390) ;click yes
-			CustomClick(683, 235) ;click start online game
-			CustomClick(683, 161) ;click host
-			CustomClick(629, 417) ;click bandit
-			CustomClick(683, 508) ;click ready
-			CustomClick(683, 508) ;twice
-		}
+		CustomClick(683, 459) ; quit to menu
+		CustomClick(683, 390) ; yes
+	} else if (r = 900) {
+		CustomClick(800, 524) ; quit to menu
+		CustomClick(800, 455) ; yes
+	} else if (r = 1080) {
+		CustomClick(960, 610) ; quit to menu
+		CustomClick(960, 541) ; yes
 	}
-	if (r = 900) {
-		if (z = 2) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(800, 380) ;click video settings
-			CustomClick(800, 335) ;click zoom scale
-			CustomClick(800, 568) ;click back
-			CustomClick(800, 524) ;click quit to menu
-			CustomClick(800, 455) ;click yes
-			CustomClick(800, 235) ;click start online game
-			CustomClick(800, 177) ;click host
-			CustomClick(746, 480) ;click bandit
-			CustomClick(800, 570) ;click ready
-			CustomClick(800, 570) ;twice
-			
-		} else if (z = 1) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(800, 524) ;click quit to menu
-			CustomClick(800, 455) ;click yes
-			CustomClick(800, 235) ;click start online game
-			CustomClick(800, 177) ;click host
-			CustomClick(746, 480) ;click bandit
-			CustomClick(800, 570) ;click ready
-			CustomClick(800, 570) ;twice
-		}
+}
+
+HostGame(r) {
+	if (r = 768) {
+		CustomClick(683, 235) ; start online game
+		CustomClick(683, 161) ; host
+	} else if (r = 900) {
+		CustomClick(800, 235) ; start online game
+		CustomClick(800, 177) ; host
+	} else if (r = 1080) {
+		CustomClick(960, 235) ; start online game
+		CustomClick(960, 193) ; host
 	}
-	if (r = 1080) {
-		if (z = 2) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(960, 465) ;click video settings
-			CustomClick(960, 418) ;click zoom scale (2x)
-			CustomClick(960, 350) ;click zoom scale (3x)
-			CustomClick(960, 652) ;click back
-			CustomClick(960, 610) ;click quit to menu
-			CustomClick(960, 541) ;click yes
-			CustomClick(960, 235) ;click start online game
-			CustomClick(960, 193) ;click host
-			CustomClick(906, 565) ;click bandit
-			CustomClick(960, 670) ;click ready
-			CustomClick(960, 670) ;twice
-		} else if (z = 3) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(960, 415) ;click video settings
-			CustomClick(960, 350) ;click zoom scale (3x)
-			CustomClick(960, 652) ;click back
-			CustomClick(960, 610) ;click quit to menu
-			CustomClick(960, 541) ;click yes
-			CustomClick(960, 235) ;click start online game
-			CustomClick(960, 193) ;click host
-			CustomClick(906, 565) ;click bandit
-			CustomClick(960, 670) ;click ready
-			CustomClick(960, 670) ;twice
-		} else if (z = 1) {
-			Send {Esc Down}       ;open menu
-			Sleep, 100
-			Send {Esc Up}
-			CustomClick(960, 610) ;click quit to menu
-			CustomClick(960, 541) ;click yes
-			CustomClick(960, 235) ;click start online game
-			CustomClick(960, 193) ;click host
-			CustomClick(906, 565) ;click bandit
-			CustomClick(960, 670) ;click ready
-			CustomClick(960, 670) ;twice
-		}
+}
+
+JoinGame(r) {
+	if (r = 768) {
+		CustomClick(683, 235) ; start online game
+		Sleep, 3000           ; wait 3s
+		CustomClick(683, 274) ; join game
+	} else if (r = 900) {
+		CustomClick(800, 235) ; start online game
+		Sleep, 3000           ; wait 3s
+		CustomClick(800, 290) ; join game
+	} else if (r = 1080) {
+		CustomClick(960, 235) ; start online game
+		Sleep, 3000           ; wait 3s
+		CustomClick(960, 299) ; join game
+	}
+}
+
+PickBandit(r) {
+	if (r = 768) {
+		CustomClick(629, 417) ; pick bandit
+	} else if (r = 900) {
+		CustomClick(746, 480) ; pick bandit
+	} else if (r = 1080) {
+		CustomClick(906, 565) ; pick bandit
+	}
+}
+PickSniper(r) {
+	if (r = 768) {
+		CustomClick(775, 417) ; pick sniper
+	} else if (r = 900) {
+		CustomClick(892, 1051) ; pick sniper
+	} else if (r = 1080) {
+		CustomClick(906, 565) ; pick sniper
+	}
+}
+
+PickChef(r) {
+	if (r = 768) {
+		CustomClick(870, 417) ; pick chef
+	} else if (r = 900) {
+		CustomClick(988, 480) ; pick chef
+	} else if (r = 1080) {
+		CustomClick(1148, 565) ; pick chef
+	}
+}
+
+PickHAND(r) {
+	if (r = 768) {
+		CustomClick(687, 417) ; pick han-d
+	} else if (r = 900) {
+		CustomClick(807, 480) ; pick han-d
+	} else if (r = 1080) {
+		CustomClick(966, 565) ; pick han-d
+	}
+}
+
+StartRun(r) {
+	if (r = 768) {
+		CustomClick(683, 508) ; ready
+		CustomClick(683, 508) ; needs to be clicked twice
+	} else if (r = 900) {
+		CustomClick(800, 570) ; ready
+		CustomClick(800, 570) ; needs to be clicked twice
+	} else if (r = 1080) {
+		CustomClick(960, 670) ; ready
+		CustomClick(960, 670) ; needs to be clicked twice
+	}
+}
+
+StartCoopRun(r) {
+	if (r = 768) {
+		CustomClick(683, 508) ; ready
+		Sleep, 3000           ; wait 3s (co-op partner should have joined by then, adjust if necessary)
+		CustomClick(683, 508) ; click ready again to start the game
+	} else if (r = 900) {
+		CustomClick(800, 570) ; ready
+		Sleep, 3000           ; wait 3s (co-op partner should have joined by then, adjust if necessary)
+		CustomClick(800, 570) ; click ready again to start the game
+	} else if (r = 1080) {
+		CustomClick(960, 670) ; ready
+		Sleep, 3000           ; wait 3s (co-op partner should have joined by then, adjust if necessary)
+		CustomClick(960, 670) ; click ready again to start the game
 	}
 }
