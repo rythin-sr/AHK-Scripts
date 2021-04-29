@@ -3,5 +3,5 @@ A script I made partially to learn about memory reading in AHK, as well as deal 
 
 A side effect of doing this is the ability to use splitting programs such as WSplit, which normally don't support autosplitting, for running the game.
 
-# Usage
+## Usage
 Have the split program of your choice running, bind Start/Split to **Numpad0** and Reset to **Numpad4**
