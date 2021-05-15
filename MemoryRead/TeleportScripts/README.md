@@ -1,5 +1,5 @@
 # Teleport Scripts
-A collection of AHK scripts used for teleporting around in games. Requires classMemory.ahk to be present in the same directory as the script.
+A collection of AHK scripts used for teleporting around in games, meant to be used as a way to more efficiently practice speedrun tricks. Requires classMemory.ahk to be present in the same directory as the script.
 
 ## Usage
 Generally the hotkeys go as follows:
